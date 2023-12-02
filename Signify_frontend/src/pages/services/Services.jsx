@@ -1,7 +1,14 @@
-import React from 'react'
-import voice from '../assets/voice.svg'
+import React, { useState } from 'react'
+import voice from '../../assets/voice.svg'
 
-const CoverPage = () => {
+const Services = () => {
+  
+  // const [vidCallBtn, VideoCallBtnTrigger] = useState(false)
+  
+  // VideoCallBtnTrigger = () => {
+    
+  // }
+
   return (
     <div className="py-10 text-center flex items-center flex-col">
             <div className='flex'>
@@ -23,4 +30,4 @@ const CoverPage = () => {
   )
 }
 
-export default CoverPage
+export default Services
