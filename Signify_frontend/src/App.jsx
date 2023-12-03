@@ -1,6 +1,8 @@
 import Navbar from "./components/Navbar"
 import Services from "./pages/services/Services"
 import Register from "./pages/register/Register"
+import HearingCall from "./pages/hearingCall/HearingCall"
+import DeafCall from "./pages/deafCall/DeafCall"
 
 export default function App() {
   return (
@@ -10,8 +12,10 @@ export default function App() {
     //     {/* <Services /> */}
     //   </main>
     // </div>
-    <div>
-      <Register/>
+    <div className=" min-h-screen w-screen">
+      {/* <Register/> */}
+        {/* <HearingCall /> */}
+        <DeafCall />
     </div>
   )
 }
