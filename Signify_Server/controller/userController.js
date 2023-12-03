@@ -1,5 +1,4 @@
-const CryptoJS = require('crypto-js')
-const jwt = require('jsonwebtoken')
+import CryptoJS from 'crypto-js';
 
 import { ref, set } from 'firebase/database';
 import { createUserWithEmailAndPassword, fetchSignInMethodsForEmail, signInWithEmailAndPassword} from 'firebase/auth';
