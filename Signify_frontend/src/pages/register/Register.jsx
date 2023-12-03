@@ -11,33 +11,41 @@ function Register() {
     <div className='mainContainer'>
       <div className='boxWrapper'>
         <div className="subWrapper subWrapper1">
-
+            <img src={Images.advertisingGirl} alt="advertising girl" />
         </div>
         <div className="subWrapper subWrapper2">
             <div className="wrapper">
+                <div className="icon">
+                    <CloseIcon className='closeIcon'/>
+                </div>
                 <div className="imgLogo">
                     <img src={Images.logo} alt="logo" />
                 </div>
                 <div className="heading">
-                    <h3>Welcome to Signify: Bridging Worlds with Every Gesture</h3>
+                    <h3>Welcome to Signify :</h3> <h3>Bridging Worlds with Every Gesture</h3>
                     <p>Already signed up? <span>Login</span></p>
                 </div>
                 <div className="body">
-                    <div className="subBody">
-                        <label>
-                            <input type="radio" name='category' value='personal' /> Personal
-                        </label>
-                        <label>
-                            <input type="radio" name='category' value='organization' /> Organization
-                        </label>
+                    <div className="categoryField">
+                        <div className="label1">
+                            <label>
+                                <input type="radio" name='category' value='personal' /> Personal
+                            </label>
+                        </div>
+                        <div className="label2">
+                            <label>
+                                <input type="radio" name='category' value='organization' /> Organization
+                            </label>
+                        </div>
                     </div>
                     <div className="emailField">
                         <input type="text" name="email" placeholder='Your email address'/>
                     </div>
                     <div className="passwordField">
-                        <input type="text" name="password" placeholder="Create a password" />
+                        <input type="password" name="password" placeholder="Create a password" />
+                        <VisibilityIcon className='visibilityIcon'/>
                     </div>
-                    <div className="countryField">
+                    {/* <div className="countryField">
                         <p>Country of residence</p>
                         <select name="residence" >
                             <option value="">Select an option</option>
@@ -45,13 +53,15 @@ function Register() {
                             <option value="USA">United States</option>
                             <option value="IND">India</option>
                         </select>
-                    </div>
+                    </div> */}
                     <div className="signUpBtn">
-                        <LockOutlinedIcon/>
-                        <p>Sign up</p>
+                        <LockOutlinedIcon className='lockOutIcon'/>
+                        <button>Sign up</button>
+                    </div>
+                    <div className="otherSignupOptions">
+                        <p className='endStmt'>Or, continue with <span>Google</span> or <span>Facebook</span></p>
                     </div>
                 </div>
-                <p className='endStmt'>Or, continue with <span>Google</span> or <span>Facebook</span></p>
             </div>
         </div>
       </div>

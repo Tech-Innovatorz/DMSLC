@@ -1,0 +1,224 @@
+.mainContainer {
+
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('../../assets/bg.jpg');
+    // padding: 2%;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    .boxWrapper {
+        
+        margin: 6%;
+        // position: absolute;
+        width: 1000px;
+        height: 560px;
+        // margin: 5% 12%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        background-color: #f0f0f0;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        
+
+        .subWrapper{
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .subWrapper1 {  
+            // border-right: 1px solid black;
+            // border-right: black;
+            img {
+                background-repeat: no-repeat;
+                background-size: cover;
+                height: 100%;
+                width: 100%;
+            }
+        }
+
+        .subWrapper2 {
+            
+            .wrapper {
+                padding: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+
+                .icon {
+                    position: relative;
+                    width: 100%;
+
+                    .closeIcon {
+                        position: absolute;
+                        right: 0;
+                    }
+
+                }
+
+                .imgLogo {
+                    height: 50px;
+                    width: 100px;
+                    margin-top: 25px;
+                }
+
+                .heading {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-direction: column;
+                    margin-top: 25px;
+
+                    h3 {
+                        font-size: 20px;
+                        font-weight: 700;
+                        padding-top: 3px;
+                    }
+
+                    p {
+                        font-size: 14px;
+                        padding-top: 15px;
+
+                        span {
+                            color: rgb(0, 225, 225);
+                            text-decoration: underline;
+                            cursor: pointer;
+                            font-weight: 500;
+                        }
+                    }
+                }
+
+                .body {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    width: 375px;
+                    height: 65px;
+                    margin-top: 100px;
+
+                    .categoryField {
+                        display: flex;
+                        flex-direction: row;
+                        height: 25px;
+                        width: 100%;
+                        align-items: center;
+                        justify-content: space-around;
+                        margin-top: 100px;
+                        
+                        .label1 {
+                            padding: 10px;
+                            width: 100%;
+                            border: 1px solid black;
+                            margin-right: 5px;
+                            border-radius: 5px;
+                            
+                        }
+                        .label2 {
+                            padding: 10px;
+                            width: 100%;
+                            border: 1px solid black;
+                            margin-left: 5px;
+                            border-radius: 5px;
+                        }
+                    }
+
+                    .emailField {
+                        height: 100%;
+                        width: 100%;
+                        margin-top: 30px;
+                        border: 1px solid black;
+                        border-radius: 5px; 
+                        
+                        input {
+                            height: 100%;
+                            padding: 10px;
+                            width: 100%;
+
+                            :focus {
+                                outline: none;
+                            }
+                        }
+                    }
+
+                    .passwordField {
+                        height: 100%;
+                        width: 100%;
+                        margin-top: 25px;
+                        border: 1px solid black;
+                        border-radius: 5px;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-start;
+                        align-items: center;
+                        position: relative;
+                        
+                        input {
+                            height: 100%;
+                            padding: 10px;
+                            width:90%;
+                            :focus {
+                                outline: none;
+                            }
+                        }
+
+                        .visibilityIcon {
+                            cursor: pointer;
+                            color: rgb(21, 243, 243);
+                            width: 10%;
+                        }
+                    }
+
+                    .signUpBtn {
+                        height: 100%;
+                        width: 100%;
+                        margin-top: 25px;
+                        border: 1px solid green;
+                        background-color: rgb(44, 206, 39);
+                        border-radius: 5px;
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: center;
+                        flex-direction: row;
+                        cursor: pointer;
+                        color: white;
+
+                        :hover {
+                            background-color: rgb(41, 142, 37);
+                        }
+
+                        .lockOutIcon {
+                            width: 10%;
+                        }
+                        button{
+                            font-size: 17px;
+                            font-weight: 600;
+                            width: 90%;
+                            height: 100%;
+                            padding: 7px;
+                        }
+                    }
+
+                    .otherSignupOptions {
+                        margin-top: 20px;
+
+                        span{
+                            color: rgb(0, 225, 225);
+                            font-weight: 500;
+                            text-decoration: underline;
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+}
