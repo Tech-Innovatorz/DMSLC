@@ -34,7 +34,7 @@ export const userSignup = async(req, res) => {
 
     } catch(error) {
         console.log("Error creating user!!", error.message)
-        res.status(500).json({message: error.message});
+        return res.status(500).json({message: error.message});
     }
 }
 
@@ -62,8 +62,49 @@ export const userLogin = async(req, res) => {
 
     } catch(error) {
         console.log("Error signing in user!!", error.message)
-        res.status(500).json({message: error.message});
+        return res.status(500).json({message: error.message});
+    }
+}
+
+export const getCurrentUser = (req, res) => {
+
+    try {
+
+        const currentUser = auth.currentUser
+
+        if(currentUser == null) {
+            console.log("No user is logged in");
+            return res.status(401).json({message: "No user logged in!!"});
+        }
+
+        return res.status(200).json({message: currentUser.uid});
+
+    } catch(error) {
+        console.log("Couldn't get user credentials!!", error.message);
+        return res.status(500).json({message: error.message});
     }
 
+}
+
+export const logoutUser = async (req, res) => {
+
+    try {
+
+        const currentUser = auth.currentUser
+
+        if(currentUser == null) {
+            console.log("No user logged in!!");
+            return res.status(401).json({message: "No user logged in!!"});
+        }
+
+        await auth.signOut();
+
+        console.log("User Logged out Successfully!!");
+        return res.status(200).json({message: "User Logged Out successfully"});
+
+    } catch(error) {
+        console.log("Couldn't logout user!!");
+        return res.status(500).json({message: error.message});
+    }
 
 }
