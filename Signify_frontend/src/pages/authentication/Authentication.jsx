@@ -7,6 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const userInitialValues = {
     email: "",
@@ -16,10 +17,12 @@ const userInitialValues = {
 
 function Authentication() {
 
+    const navigate = useNavigate();
+
     const [visibilityIcon, visibilityIconTrigger] = useState(false)
-    const [passwordType, passwordTypeTrigger] = useState('password');
-    const [page, pageTrigger] = useState('register');
-    const [userType, userTypeTrigger] = useState('');
+    const [passwordType, passwordTypeTrigger] = useState('password');  //'text' & 'password'
+    const [page, pageTrigger] = useState('register'); // 'login' & 'register'
+    const [userType, userTypeTrigger] = useState('');  // 'normal'  & 'special'
     const [userDetails, userDetailsTrigger] = useState(userInitialValues);
 
     const iconTrigger = () => {
@@ -66,6 +69,7 @@ function Authentication() {
                 console.log('User Registered Successfully!!', userId);
                 userTypeTrigger('');
                 userDetailsTrigger(userInitialValues);
+                pageTrigger("login");
             }
             else {}
 
@@ -91,6 +95,8 @@ function Authentication() {
                 console.log('User Logged In Successfully!!', userId);
                 userTypeTrigger('');
                 userDetailsTrigger(userInitialValues);
+                navigate("/");
+                navigate(0);
             }
             else {}
 
