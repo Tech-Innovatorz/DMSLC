@@ -1,10 +1,13 @@
 import Services from "./pages/services/Services"
+import Register from "./pages/register/Register"
+import HearingCall from "./pages/hearingCall/HearingCall"
+import DeafCall from "./pages/deafCall/DeafCall"
 import Authentication from "./pages/authentication/Authentication"
 import Home from "./pages/home/Home"
+
 import { BrowserRouter as Route, Navigate, Routes, Router } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import axios from "axios";
-
 import {
   createBrowserRouter,
   RouterProvider,
@@ -51,8 +54,21 @@ export default function App() {
   ]);
 
   return (
+    // <div className="bg-gradient-to-br from-[#5A9EE7] to-[#1C344E] min-h-screen w-screen">
+    //   {/* <Navbar /> */}
+    //   <main>
+    //     {/* <Services /> */}
+    //   </main>
+    // </div>
+    // <div className=" min-h-screen w-screen">
+    //   {/* <Register/> */}
+    //     {/* <HearingCall /> */}
+    //     <DeafCall />
+    // </div>
+    // <div>
+    //   <Register/>
+    // </div>
 
     <RouterProvider router={router}/>
-  
-    );
+  )
 }
