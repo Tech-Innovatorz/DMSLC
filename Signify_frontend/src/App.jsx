@@ -1,11 +1,9 @@
 import Services from "./pages/services/Services"
-import Register from "./pages/register/Register"
 import HearingCall from "./pages/hearingCall/HearingCall"
 import DeafCall from "./pages/deafCall/DeafCall"
 import Authentication from "./pages/authentication/Authentication"
 import Home from "./pages/home/Home"
 
-import { BrowserRouter as Route, Navigate, Routes, Router } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -50,7 +48,16 @@ export default function App() {
     {
       path: "/services",
       element: !currentUser ? <Authentication/> : <Services/>,
+    },
+    {
+      path: "/hC",
+      element: <HearingCall/>,
+    },
+    {
+      path: "/dC",
+      element: <DeafCall/>,
     }
+    
   ]);
 
   return (
