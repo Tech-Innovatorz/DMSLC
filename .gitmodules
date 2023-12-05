@@ -1,0 +1,3 @@
+[submodule "video-sdk-samples-js"]
+	path = video-sdk-samples-js
+	url = ./

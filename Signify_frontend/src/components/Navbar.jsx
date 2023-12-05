@@ -13,7 +13,9 @@ const Navbar = () => {
 
 
       // e.name = e.name === 'menu' ? 'close' : 'menu'
-      navLinks.classList.toggle('top-[9%]')
+      navLinks.classList.toggle('top-[6%]')
+      navLinks.classList.toggle('top-[-100%]')
+
   }
 
   return (

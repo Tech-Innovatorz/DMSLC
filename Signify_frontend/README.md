@@ -15,3 +15,4 @@ Currently, two official plugins are available:
 4. SASS  ->  `npm i -D sass`
 5. Material UI  ->  `npm i @mui/icons-material @mui/material @emotion/styled @emotion/react`
 6. Axios  ->  `npm i axios`
+7. React-icons -> `npm install react-icons --save`

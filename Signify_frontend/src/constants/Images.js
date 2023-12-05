@@ -5,7 +5,7 @@ import advertisingGirl from '../assets/advertisingGirl.png'
 import bg from '../assets/bg.jpg'
 import signingPerson from '../assets/deaf-in-sign-language.jpg'
 import hearingPerson from '../assets/KarthikUniformImage.jpeg'
-
+import gMeetPageImage from '../assets/user_edu_get_a_link_light.svg'
 
 export default {
     react,
@@ -14,5 +14,6 @@ export default {
     advertisingGirl,
     bg,
     signingPerson,
-    hearingPerson
+    hearingPerson,
+    gMeetPageImage
 };
