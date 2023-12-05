@@ -3,6 +3,9 @@ import HearingCall from "./pages/hearingCall/HearingCall"
 import DeafCall from "./pages/deafCall/DeafCall"
 import Authentication from "./pages/authentication/Authentication"
 import Home from "./pages/home/Home"
+import MeetPage from "./pages/meetPage/MeetPage"
+import Navbar from "./components/Navbar"
+
 
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -62,9 +65,9 @@ export default function App() {
 
   return (
     // <div className="bg-gradient-to-br from-[#5A9EE7] to-[#1C344E] min-h-screen w-screen">
-    //   {/* <Navbar /> */}
+    //   <Navbar />
     //   <main>
-    //     {/* <Services /> */}
+    //     <Services />
     //   </main>
     // </div>
     // <div className=" min-h-screen w-screen">
@@ -75,7 +78,10 @@ export default function App() {
     // <div>
     //   <Register/>
     // </div>
+ <div>
+<MeetPage/>
+</div> 
 
-    <RouterProvider router={router}/>
+    // <RouterProvider router={router}/>
   )
 }
