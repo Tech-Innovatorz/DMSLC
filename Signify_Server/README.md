@@ -12,3 +12,4 @@
 8. Crypto-JS  ->  `npm i crypto-js`
 9. JSON Web Token  ->  `npm i jsonwebtoken`
 10. Agora Token -> `npm i agora-token`
+11. Agora RTC SDK NG  ->  `npm i agora-rtc-sdk-ng`

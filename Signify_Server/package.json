@@ -1,6 +1,7 @@
 {
   "type": "module",
   "dependencies": {
+    "agora-rtc-sdk-ng": "^4.19.3",
     "agora-token": "^2.0.3",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",

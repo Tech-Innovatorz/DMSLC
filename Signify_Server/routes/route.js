@@ -1,14 +1,18 @@
 import { default as express } from 'express';
 
-import { userSignup, userLogin, getCurrentUser, logoutUser } from '../controller/userController.js';
-import { generateToken } from '../controller/videoCallController.js';
+import { userSignup, userLogin, getCurrentUser, logoutUser, getUserType } from '../controller/userController.js';
+import { deleteToken, generateToken, getToken, storeToken } from '../controller/videoCallController.js';
 
 const router = express.Router();
 
 router.post('/signup', userSignup);
 router.post('/login', userLogin);
-router.post('/getCurrentUser', getCurrentUser);
+router.get('/getCurrentUser', getCurrentUser);
 router.post('/logoutUser', logoutUser);
-router.post('/generateToken', generateToken);
+router.get('/generateToken', generateToken);
+router.get('/getUserType', getUserType);
+router.get('/getToken',getToken);
+router.delete('/deleteToken',deleteToken);
+router.post('/storeToken',storeToken);
 
 export default router;

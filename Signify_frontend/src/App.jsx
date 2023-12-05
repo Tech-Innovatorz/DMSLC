@@ -6,7 +6,6 @@ import Home from "./pages/home/Home"
 import MeetPage from "./pages/meetPage/MeetPage"
 import Navbar from "./components/Navbar"
 
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -23,12 +22,13 @@ export default function App() {
 
     const getCurrentUser = async () => {
       try {
-        const response = await axios.post('http://localhost:8800/getCurrentUser', {});
+        const response = await axios.get('http://localhost:8800/getCurrentUser', {});
         console.log(response.data.message , " is logged in!! ");
         currentUserTrigger(response.data.message);
 
       } catch (error) {
         console.error('Error fetching data:', error.message);
+        currentUserTrigger(null);
       }
     };
 
@@ -42,7 +42,7 @@ export default function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: currentUser ? <Home/> : <Authentication/>,
+      element: currentUser ? <MeetPage/> : <Authentication/>,
     },
     {
       path: "/authenticate",
@@ -59,6 +59,10 @@ export default function App() {
     {
       path: "/dC",
       element: <DeafCall/>,
+    },
+    {
+      path: "/meet",
+      element: <MeetPage/>,
     }
     
   ]);

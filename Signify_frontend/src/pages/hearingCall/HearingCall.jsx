@@ -5,9 +5,53 @@ import { TiVideo } from "react-icons/ti";
 import { IoCall } from "react-icons/io5";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { Images } from '../../constants'
-
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const HearingCall = () => {
+    
+    const navigate = useNavigate();
+    const [currentUserId, currentUserTrigger] = useState(null);
+    const [meetingLink, meetingLinkTrigger] = useState("");
+
+    useEffect(() => {
+        console.log("Entered_1")
+
+        const getCurrentUser = async () => {
+          try {
+            const response = await axios.get('http://localhost:8800/getCurrentUser', {});
+            console.log(response.data.message , " is logged in!! ");
+            currentUserTrigger(response.data.message);
+    
+          } catch (error) {
+            console.error('Error fetching data:', error.message);
+          }
+        };
+        console.log("ENTERED")
+
+        const getMeetToken = async () => {
+            try{
+                const response = await axios.get("http://localhost:8800/getToken", {
+                    "uid" : currentUserId
+                });
+                console.log(response.data.message);
+                meetingLinkTrigger(response.data.message);
+
+            } catch(error) {
+                console.error("Error generating token!!", error.message);
+                // navigate("/meet");
+                // navigate(0);
+            }
+        }
+    
+        getCurrentUser();
+        getMeetToken();
+    
+        return () => {
+          // Clean-up tasks or subscriptions can be performed here
+        };
+      }, []);
     
     const ToggleWindow=(e)=>{
         const slideWindow=document.querySelector("#info-window")
@@ -33,8 +77,6 @@ const HearingCall = () => {
 
     }
 
-// h-[85vh] w-[90%]
-// h-[60vh] w-[70%]
   return (
     <div className='min-h-screen w-screen bg-[#202124] pt-6 px-16 relative overflow-hidden'>
         
@@ -72,7 +114,7 @@ const HearingCall = () => {
                 <p className='text-lg font-bold'>Meeting Details</p><br />
                 <p className='font-bold'>Joining Info</p>
                 <hr />
-                <p className='text-gray-500 font-thin'>https://www.google.com</p>
+                <p className='text-gray-500 font-thin overflow-scroll select-all'>{meetingLink}</p>
             </div>
 
             <div id='caption-window' className='h-48 w-[80%] absolute bottom-[-100%] left-40 px-3 py-3 text-white duration-700 '>
