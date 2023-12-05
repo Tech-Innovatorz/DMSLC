@@ -61,21 +61,6 @@ export default function App() {
   ]);
 
   return (
-    // <div className="bg-gradient-to-br from-[#5A9EE7] to-[#1C344E] min-h-screen w-screen">
-    //   {/* <Navbar /> */}
-    //   <main>
-    //     {/* <Services /> */}
-    //   </main>
-    // </div>
-    // <div className=" min-h-screen w-screen">
-    //   {/* <Register/> */}
-    //     {/* <HearingCall /> */}
-    //     <DeafCall />
-    // </div>
-    // <div>
-    //   <Register/>
-    // </div>
-
     <RouterProvider router={router}/>
   )
 }
