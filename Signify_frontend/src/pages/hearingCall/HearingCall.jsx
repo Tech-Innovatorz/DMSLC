@@ -12,46 +12,28 @@ import axios from 'axios';
 const HearingCall = () => {
     
     const navigate = useNavigate();
-    const [currentUserId, currentUserTrigger] = useState(null);
-    const [meetingLink, meetingLinkTrigger] = useState("");
+    // const [currentUserId, currentUserTrigger] = useState(null);
+    const [meetingLink, meetingLinkTrigger] = useState('');
 
     useEffect(() => {
         console.log("Entered_1")
+        // console.log("ENTERED")
 
-        const getCurrentUser = async () => {
-          try {
-            const response = await axios.get('http://localhost:8800/getCurrentUser', {});
-            console.log(response.data.message , " is logged in!! ");
-            currentUserTrigger(response.data.message);
-    
-          } catch (error) {
-            console.error('Error fetching data:', error.message);
-          }
-        };
-        console.log("ENTERED")
-
-        const getMeetToken = async () => {
-            try{
-                const response = await axios.get("http://localhost:8800/getToken", {
-                    "uid" : currentUserId
-                });
-                console.log(response.data.message);
-                meetingLinkTrigger(response.data.message);
-
-            } catch(error) {
-                console.error("Error generating token!!", error.message);
-                // navigate("/meet");
-                // navigate(0);
+        const fetchData = async () => {
+            try {
+              const response = await axios.get("http://localhost:8800/getToken", {});
+              console.log(response.data.message);
+              meetingLinkTrigger(response.data.message);
+            } catch (error) {
+              console.error("Error generating token!!", error.message);
+              // Handle error
             }
-        }
-    
-        getCurrentUser();
-        getMeetToken();
-    
-        return () => {
-          // Clean-up tasks or subscriptions can be performed here
-        };
-      }, []);
+          };
+      
+          fetchData();
+    }, []);
+
+    console.log("Meeting link *** ", meetingLink);
     
     const ToggleWindow=(e)=>{
         const slideWindow=document.querySelector("#info-window")
