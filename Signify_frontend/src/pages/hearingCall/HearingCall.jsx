@@ -17,189 +17,175 @@ const HearingCall = () => {
     const [meetingLink, meetingLinkTrigger] = useState('');
     const localPlayerContainerRef = useRef(null);
     const remotePlayerContainerRef = useRef(null);
+    // const [config, setConfig] = useState({});
+    var config = {};
+  //   var config = {
+  //     "uid": 1,
+  //     "appId": "1d71ef139254403f92c411b84d87a74c",
+  //     "channelName": "main",
+  //     "token": "007eJxTYJgv+DXQV/vJ3jiVa+3WD3wVPS9JVTiuidvm/XWvocQNpmIFBsMUc8PUNENjSyNTExMD4zRLo2QTQ8MkC5MUC/NEc5Nk/UOFqeuFi1NnfA5hZWRgZGABYhBgApPMYJIFSuYmZubJMBQkuoSaVhW7lBn7ORuGOXlkpCW5eaVVBXkZuxoBAM/qJ0U=",
+  //     "proxyUrl": "http://localhost:8080/",
+  //     "serverUrl": "",
+  //     "tokenExpiryTime": "600",
+  //     "encryptionMode": "aes-256-gcm2",
+  //     "salt": "",
+  //     "cipherKey": "",
+  //     "presenceTimeout": 300,
+  //     "logUpload": false,
+  //     "logFilter": {
+  //         "error": true,
+  //         "warn": true,
+  //         "info": true,
+  //         "track": true,
+  //         "debug": false
+  //     },
+  //     "cloudProxy": true,
+  //     "useStringUserId": false
+  // }
+   
+    let agoraEngine = null;
+
+    var channelParameters = {
+        localVideoTrack: null,
+        localAudioTrack: null,
+        remoteVideoTrack: null,
+        remoteAudioTrack: null
+      };
 
     useEffect(() => {
-        console.log("Entered_1")
-        // console.log("ENTERED")
 
-        const fetchData = async () => {
-            try {
-              const response = await axios.get("http://localhost:8800/getToken", {});
-              console.log(response.data.message);
-              meetingLinkTrigger(response.data.message);
-            } catch (error) {
-              console.error("Error generating token!!", error.message);
-              // Handle error
-            }
-          };
-      
-          fetchData();
+      const fetchData = async () => {
+          try {
+            // const response = await axios.get("http://localhost:8800/getToken", {});
+            // console.log(response.data.message);
+            // meetingLinkTrigger(response.data.message);
 
-        //   const appId =  process.env.AGORA_APP_ID;  
-        //   const channelName = process.env.AGORA_CHANNEL_NAME;
-
-          const agoraVideoCall = async ()=> {
-            try {
-
-                const config = {
-                    "uid": 100,
-                    "appId": "1d71ef139254403f92c411b84d87a74c",
-                    "channelName": "main",
-                    "token": "007eJxTYMj6tzvx8PuF5q/eTDxbGqMottXo0AujCQW2bG1mO/8+YmxXYEhNNk4xT0s1N7c0SzUxTTZLSk0zNDJMTUsyTzM0TDFJ5o0pTG0IZGRw7algYIRCEJ+FITcxM4+BAQDu8yDT",
-                    "proxyUrl": "http://localhost:8080/",
-                    "serverUrl": "",
-                    "tokenExpiryTime": "600000",
-                    "encryptionMode": "aes-256-gcm2",
-                    "salt": "",
-                    "cipherKey": "",
-                    "presenceTimeout": 300,
-                    "logUpload": false,
-                    "logFilter": {
-                        "error": true,
-                        "warn": true,
-                        "info": true,
-                        "track": true,
-                        "debug": false
-                    },
-                    "cloudProxy": true,
-                    "useStringUserId": false
-                }
-
-                let agoraEngine = null;
-
-                var channelParameters = {
-                    localVideoTrack: null,
-                    localAudioTrack: null,
-                    remoteVideoTrack:null,
-                    remoteAudioTrack:null
-                  };
-
-                  const handleVSDKEvents = (eventName, ...args) => {
-                    switch (eventName) {
-                    case "user-published":
-                        if (args[1] == "video") {
-                          // Retrieve the remote video track.
-                          channelParameters.remoteVideoTrack = args[0].videoTrack;
-                          // Retrieve the remote audio track.
-                          channelParameters.remoteAudioTrack = args[0].audioTrack;
-                          // Save the remote user id for reuse.
-                        //   channelParameters.remoteUid = args[0].uid.toString();
-                          // Specify the ID of the DIV container. You can use the uid of the remote user.
-                        //   remotePlayerContainer.id = args[0].uid.toString();
-                        //   channelParameters.remoteUid = args[0].uid.toString();
-                        //   remotePlayerContainer.textContent =
-                            //   "Remote user " + args[0].uid.toString();
-                          // Append the remote container to the page body.
-                        //   document.body.append(remotePlayerContainer);
-                          // Play the remote video track.
-                          channelParameters.remoteVideoTrack.play(remotePlayerContainerRef.current);
-                        }
-                        // Subscribe and play the remote audio track If the remote user publishes the audio track only.
-                        if (args[1] == "audio") {
-                          // Get the RemoteAudioTrack object in the AgoraRTCRemoteUser object.
-                          channelParameters.remoteAudioTrack = args[0].audioTrack;
-                          // Play the remote audio track. No need to pass any DOM element.
-                          channelParameters.remoteAudioTrack.play();
-                        }
-                    }
-                };
-
-                // Set up the signaling engine with the provided App ID, UID, and configuration
-                const setupAgoraEngine = async () => {
-                    agoraEngine = new AgoraRTC.createClient({ mode: "rtc", codec: "vp9" });
-                };
-
-                await setupAgoraEngine();
-
-                 // Event Listeners
-                agoraEngine.on("user-published", async (user, mediaType) => {
-                    // Subscribe to the remote user when the SDK triggers the "user-published" event.
-                    await agoraEngine.subscribe(user, mediaType);
-                    console.log("subscribe success");
-                    // eventsCallback("user-published", user, mediaType)
-                    handleVSDKEvents("user-published", user, mediaType)
-                });
-
-                // Listen for the "user-unpublished" event.
-                agoraEngine.on("user-unpublished", (user) => {
-                    console.log(user.uid + "has left the channel");
-                });
-
-                const getAgoraEngine = () => {
-                    return agoraEngine;
-                };
-
-
-                const join = async (channelParameters) => {
-                    await agoraEngine.join(
-                      config.appId,
-                      config.channelName,
-                      config.token,
-                      config.uid
-                    );
-                    // Create a local audio track from the audio sampled by a microphone.
-                    channelParameters.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-                    // Create a local video track from the video captured by a camera.
-                    channelParameters.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
-                    // Append the local video container to the page body.
-                    // document.body.append(localPlayerContainer);
-                    // localPlayerContainerRef.current.appendChild(localPlayerContainer);
-                    // Publish the local audio and video tracks in the channel.
-                    await getAgoraEngine().publish([
-                      channelParameters.localAudioTrack,
-                      channelParameters.localVideoTrack,
-                    ]);
-                    // Play the local video track.
-                    channelParameters.localVideoTrack.play(localPlayerContainerRef.current);
-
-                    // Assuming you have the remote user's uid
-                    // const remoteUid = 123; // Replace with the actual remote user's UID
-
-                    // Subscribe to the remote user's video stream
-                    // await agoraEngine.subscribe(remoteUid);
-
-                    // Play the remote video in the container
-                    // agoraEngine.remoteVideoTrack.play(remotePlayerContainerRef.current);
-                  };
-
-                //   const localPlayerContainer = document.createElement('div');
-
-                  join(channelParameters);
-
-                //   const leave = async (channelParameters) => {
-                //     // Destroy the local audio and video tracks.
-                //     channelParameters.localAudioTrack.close();
-                //     channelParameters.localVideoTrack.close();
-                //     // Remove the containers you created for the local video and remote video.
-                //     await agoraEngine.leave();
-                //   };
-                
-                  // Return the agoraEngine and the available functions
-                //   return {
-                //     getAgoraEngine,
-                //     config,
-                //     join,
-                //     leave,
-                //   };
-
-            } catch(error) {
-                console.log(error);
-            }
+            const response = await axios.get("http://localhost:8800/getAgoraConfig", {});
+            // console.log(response.data.message);
+            meetingLinkTrigger(response.data.message.token);
+            // setConfig(response.data.message);
+            config = response.data.message;
+            console.log(config);
+            
+          } catch (error) {
+            console.error("Error generating token!!", error.message);
           }
-
-          agoraVideoCall();
-        
-    }, []);
-
-    console.log("Meeting link *** ", meetingLink);
-    
-    const leave = async (channelParameters) => {
-        // Destroy the local audio and video tracks.
-        channelParameters.localAudioTrack.close();
-        channelParameters.localVideoTrack.close();
-        // Remove the containers you created for the local video and remote video.
-        await agoraEngine.leave();
       };
+        
+      const videoCallSetup = async () => {
+        try {
+          
+          // IMPLEMENTATION CODE
+          await setupAgoraEngine();
+          
+          // Event Listeners
+          agoraEngine.on("user-published", async (user, mediaType) => {
+            // Subscribe to the remote user when the SDK triggers the "user-published" event.
+            await agoraEngine.subscribe(user, mediaType);
+            console.log("subscribe success");
+            // eventsCallback("user-published", user, mediaType)
+            handleVSDKEvents("user-published", user, mediaType)
+        });
+
+        // Listen for the "user-unpublished" event.
+        agoraEngine.on("user-unpublished", (user) => {
+            remoteUserLeave(channelParameters);
+            console.log(user.uid + "has left the channel");
+          });
+          
+          join(channelParameters);
+          
+        } catch (error) {
+          console.log("Video Call Setup failure", error.message);
+        }
+      }
+      
+      fetchData();
+      videoCallSetup();
+      
+    }, []);
+        
+    console.log("Meeting link *** ", meetingLink);
+
+    // ALL Agora SETUP TOOLS - METHODS 
+    // Method to handles Events
+    const handleVSDKEvents = (eventName, ...args) => {
+      switch (eventName) {
+      case "user-published":
+          if (args[1] == "video") {
+            // Retrieve the remote video track.
+            channelParameters.remoteVideoTrack = args[0].videoTrack;
+            // Retrieve the remote audio track.
+            channelParameters.remoteAudioTrack = args[0].audioTrack;
+            // Play the remote video track.
+            channelParameters.remoteVideoTrack.play(remotePlayerContainerRef.current);
+          }
+          // Subscribe and play the remote audio track If the remote user publishes the audio track only.
+          if (args[1] == "audio") {
+            // Get the RemoteAudioTrack object in the AgoraRTCRemoteUser object.
+            channelParameters.remoteAudioTrack = args[0].audioTrack;
+            // Play the remote audio track. No need to pass any DOM element.
+            channelParameters.remoteAudioTrack.play();
+          }
+      }
+    };
+
+    // Set up the signaling engine with the provided App ID, UID, and configuration
+    const setupAgoraEngine = async () => {
+      agoraEngine = new AgoraRTC.createClient({ mode: "rtc", codec: "vp9" });
+    };
+
+    // GET Agora Engine
+    const getAgoraEngine = () => {
+      return agoraEngine;
+    };
+
+    //Agora Join Call Method
+    const join = async (channelParameters) => {
+      await agoraEngine.join(
+        config.appId,
+        config.channelName,
+        config.token,
+        config.uid
+      );
+      // Create a local audio track from the audio sampled by a microphone.
+      channelParameters.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+      // Create a local video track from the video captured by a camera.
+      channelParameters.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+      // Append the local video container to the page body.
+      // document.body.append(localPlayerContainer);
+      // localPlayerContainerRef.current.appendChild(localPlayerContainer);
+      // Publish the local audio and video tracks in the channel.
+      await getAgoraEngine().publish([
+        channelParameters.localAudioTrack,
+        channelParameters.localVideoTrack,
+      ]);
+      // Play the local video track.
+      channelParameters.localVideoTrack.play(localPlayerContainerRef.current);
+    };
+
+    // Agora Remote User Leave Method
+    const remoteUserLeave = async (channelParameters) => {
+      // Destroy the local audio and video tracks.
+      channelParameters.remoteAudioTrack.close();
+      channelParameters.remoteVideoTrack.close();
+      // Remove the containers you created for the local video and remote video.
+      // await agoraEngine.leave();
+    };
+    // Agora Local User Leave Method
+    const localUserLeave = async (channelParameters) => {
+      // Destroy the local audio and video tracks.
+      channelParameters.localAudioTrack.close();
+      channelParameters.localVideoTrack.close();
+      // Remove the containers you created for the local video and remote video.
+      await agoraEngine.leave();
+    };
+
+    const toggleEndCall =async ()=> {
+      await localUserLeave(channelParameters);
+      navigate("/meet");
+      navigate(0);
+    }
 
     const ToggleWindow=(e)=>{
         const slideWindow=document.querySelector("#info-window")
@@ -252,7 +238,7 @@ const HearingCall = () => {
                     <button className='h-12 w-12 rounded-full duration-500 bg-gray-400 hover:bg-gray-300'><TiVideo className='m-auto h-6 w-6' /></button>
                     <button className='h-12 w-12 rounded-full duration-500 bg-gray-400 hover:bg-gray-300' onClick={ToggleCaptions}><BiSolidCaptions className='m-auto h-6 w-6' /></button>
                     <button className='h-12 w-12 rounded-full duration-500 bg-gray-400 hover:bg-gray-300'><FaMicrophone className='m-auto h-6 w-6' /></button>
-                    <button className='h-12 w-20 rounded-full duration-500 bg-red-600 hover:bg-red-300'><IoCall className='m-auto h-6 w-6' /></button>
+                    <button className='h-12 w-20 rounded-full duration-500 bg-red-600 hover:bg-red-300' onClick={toggleEndCall}><IoCall className='m-auto h-6 w-6' /></button>
                 </div>
                 <div>
                     <button className='h-12 w-12 rounded-full duration-500 bg-gray-400 bg-opacity-0 hover:bg-opacity-25 ' onClick={ToggleWindow}> <IoMdInformationCircleOutline className='m-auto h-10 w-10' /></button>
