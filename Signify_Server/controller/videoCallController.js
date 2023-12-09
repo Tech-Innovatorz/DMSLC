@@ -4,6 +4,7 @@ const {RtcTokenBuilder, RtmTokenBuilder, RtcRole, RtmRole} = pkg;
 
 import { auth, database } from "../database/db.js";
 import {getDatabase, ref, set, get, update } from 'firebase/database';
+import { v4 as uuidv4 } from 'uuid';
 
 const db = getDatabase()
 
@@ -17,7 +18,7 @@ export const generateToken = async (req, res)=> {
             const appId = process.env.AGORA_APP_ID;
             const appCertificate = process.env.AGORA_APP_CERTIFICATE;
             const channelName = process.env.AGORA_CHANNEL_NAME;
-            const uid = auth.currentUser.uid;
+            const uid = 0;
             const role = RtcRole.PUBLISHER;
             
             const expirationTimeInSeconds = 24*60*60
@@ -176,8 +177,8 @@ export const getAgoraConfig = async (req, res) => {
                 const specificValue = snapshot.val().meetToken;
                 console.log("The meet token of user " + auth.currentUser.uid + " is " + specificValue);
 
-                return res.status(200).json({message: {
-                    "uid": auth.currentUser.uid,
+                return res.json({
+                    "uid": uuidv4(),
                     "appId": process.env.AGORA_APP_ID,
                     "channelName": process.env.AGORA_CHANNEL_NAME,
                     "token": specificValue,
@@ -198,7 +199,7 @@ export const getAgoraConfig = async (req, res) => {
                     },
                     "cloudProxy": true,
                     "useStringUserId": false
-                }});
+                });
             } else {
             // Data doesn't exist at the specified node
             console.log('meet token not available');
@@ -211,6 +212,29 @@ export const getAgoraConfig = async (req, res) => {
         });
 
         console.log("Agora configuration file sent successfully");
+        // return res.json({
+        //     "uid": uuidv4(),
+        //     "appId": process.env.AGORA_APP_ID,
+        //     "channelName": process.env.AGORA_CHANNEL_NAME,
+        //     "token": process.env.AGORA_TEMPORARY_TOKEN,
+        //     "proxyUrl": "http://localhost:8080/",
+        //     "serverUrl": "",
+        //     "tokenExpiryTime": "600000",
+        //     "encryptionMode": "aes-256-gcm2",
+        //     "salt": "",
+        //     "cipherKey": "",
+        //     "presenceTimeout": 300,
+        //     "logUpload": false,
+        //     "logFilter": {
+        //         "error": true,
+        //         "warn": true,
+        //         "info": true,
+        //         "track": true,
+        //         "debug": false
+        //     },
+        //     "cloudProxy": true,
+        //     "useStringUserId": false
+        // });
 
     } catch(error) {
         console.log("Couldn't send Agora Configuration file!!", error.message);
