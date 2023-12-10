@@ -4,7 +4,6 @@ import DeafCall from "./pages/deafCall/DeafCall"
 import Authentication from "./pages/authentication/Authentication"
 import Home from "./pages/home/Home"
 import MeetPage from "./pages/meetPage/MeetPage"
-import Navbar from "./components/Navbar"
 
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -68,6 +67,6 @@ export default function App() {
   ]);
 
   return (
-    <RouterProvider router={router}/>
+      <RouterProvider router={router}/>
   )
 }

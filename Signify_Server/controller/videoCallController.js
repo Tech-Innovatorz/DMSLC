@@ -4,7 +4,6 @@ const {RtcTokenBuilder, RtmTokenBuilder, RtcRole, RtmRole} = pkg;
 
 import { auth, database } from "../database/db.js";
 import {getDatabase, ref, set, get, update } from 'firebase/database';
-import { v4 as uuidv4 } from 'uuid';
 
 const db = getDatabase()
 
@@ -19,6 +18,7 @@ export const generateToken = async (req, res)=> {
             const appCertificate = process.env.AGORA_APP_CERTIFICATE;
             const channelName = process.env.AGORA_CHANNEL_NAME;
             const uid = 0;
+            // const userAccount = auth.currentUser.uid;
             const role = RtcRole.PUBLISHER;
             
             const expirationTimeInSeconds = 24*60*60
@@ -174,14 +174,16 @@ export const getAgoraConfig = async (req, res) => {
         .then((snapshot) => {
             if (snapshot.exists()) {
                 // Data exists at the specified node
-                const specificValue = snapshot.val().meetToken;
-                console.log("The meet token of user " + auth.currentUser.uid + " is " + specificValue);
+                console.log(snapshot.val());
+                const token = snapshot.val().meetToken;
+                const uid = snapshot.val().uId;
+                console.log("The meet token of user " + uid + " is " + token);
 
                 return res.json({
-                    "uid": uuidv4(),
+                    "uid": uid,
                     "appId": process.env.AGORA_APP_ID,
                     "channelName": process.env.AGORA_CHANNEL_NAME,
-                    "token": specificValue,
+                    "token": token,
                     "proxyUrl": "http://localhost:8080/",
                     "serverUrl": "",
                     "tokenExpiryTime": "600000",
@@ -195,10 +197,10 @@ export const getAgoraConfig = async (req, res) => {
                         "warn": true,
                         "info": true,
                         "track": true,
-                        "debug": false
+                        "debug": true
                     },
                     "cloudProxy": true,
-                    "useStringUserId": false
+                    "useStringUserId": true
                 });
             } else {
             // Data doesn't exist at the specified node

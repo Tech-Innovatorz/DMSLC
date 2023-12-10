@@ -1,22 +1,16 @@
 import React from 'react'
 import { TiVideo } from "react-icons/ti";
 import { Images } from '../../constants';
-import Navbar from '../../components/Navbar';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import HearingCall from '../hearingCall/HearingCall';
-import DeafCall from '../deafCall/DeafCall';
-
 const MeetPage = () => {
   
   const [meetingLink, meetingLinkTrigger] = useState('');
-  const [currentUserId, currentUserTrigger] = useState('');
   const navigate = useNavigate();
 
   // EDGE CASE :- if user types in meeting link and click on 'instant meeting' without bothering to clear the typed content...
-
 
   const onInputChange = (e)=> {
     meetingLinkTrigger(e.target.value);

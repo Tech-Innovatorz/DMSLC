@@ -3,6 +3,7 @@ import CryptoJS from 'crypto-js';
 import {getDatabase, ref, set, get } from 'firebase/database';
 import { createUserWithEmailAndPassword, fetchSignInMethodsForEmail, signInWithEmailAndPassword} from 'firebase/auth';
 import { auth, database } from "../database/db.js";
+import { v4 as uuidv4 } from 'uuid';
 
 const db = getDatabase()
 
@@ -26,7 +27,8 @@ export const userSignup = async(req, res) => {
         set(userRef, {
             email : req.body.email,
             password : cipherText,
-            userType: req.body.userType ,
+            userType: req.body.userType,
+            uid: uuidv4()
         });
 
         console.log("User Created Successfully!!", user.uid);
