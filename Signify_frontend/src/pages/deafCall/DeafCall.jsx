@@ -26,6 +26,10 @@ const DeafCall = () => {
 
   const [openDialog, setOpenDialog] = useState(true);
 
+   //check whether other user joined or not
+   const [otherUserJoined, setOtherUserJoined] = useState(false)
+   const [isInitialRender, setIsInitialRender] = useState(true);
+
   let agoraEngine = null;
 
   var channelParameters = {
@@ -43,6 +47,39 @@ const DeafCall = () => {
       }
     };
   }, []);
+
+  //this useEffect runs depending whether other user is there or not
+  useEffect(() => {
+    // Skip the first render
+    if (isInitialRender) {
+      setIsInitialRender(false);
+      return;
+    }
+
+    if(!openDialog)
+    {
+      if (otherUserJoined){
+        const ourUser = document.querySelector("#our-user");
+  
+        
+        ourUser.classList.remove("h-[100%]", "w-[100%]", "top-0");
+        ourUser.classList.add("h-44", "w-64", "top-3", "left-3");
+  
+  
+      }
+      else{
+        const ourUser = document.querySelector("#our-user");
+
+        ourUser.classList.add("h-[100%]", "w-[100%]", "top-0");
+        ourUser.classList.remove("h-44", "w-64", "top-3", "left-3");
+        
+  
+      }
+
+    }
+    
+  }, [otherUserJoined,isInitialRender])
+  
 
   const agoraVideoCall = async () => {
     try {
@@ -88,12 +125,20 @@ const DeafCall = () => {
         // Subscribe to the remote user when the SDK triggers the "user-published" event.
         await agoraEngine.subscribe(user, mediaType);
         console.log("subscribe success");
+
+        //the other user has joined
+        setOtherUserJoined(true)
+
         // eventsCallback("user-published", user, mediaType)
         handleVSDKEvents("user-published", user, mediaType);
       });
 
       // Listen for the "user-unpublished" event.
       agoraEngine.on("user-unpublished", (user) => {
+        
+        //this means other user has left
+        setOtherUserJoined(false)
+
         console.log(user.uid + "has left the channel");
       });
 
@@ -166,19 +211,16 @@ const DeafCall = () => {
     }
 
     const ToggleCaptions=(e)=>{
-        const captionWindow=document.querySelector("#caption-window")
-        const videoWindow=document.querySelector("#video-window")
-        
-        console.log(captionWindow,videoWindow)
-
-        videoWindow.classList.toggle('h-[60vh]')
-        videoWindow.classList.toggle('w-[70%]')
-
-        videoWindow.classList.toggle('h-[85vh]')
-        videoWindow.classList.toggle('w-[90%]')
-
-        captionWindow.classList.toggle('bottom-[-100%]')
-        captionWindow.classList.toggle('bottom-13')
+      const captionWindow = document.querySelector("#caption-window");
+      const videoWindow = document.querySelector("#video-window");
+  
+      console.log(captionWindow, videoWindow);
+      // videoWindow.classList.toggle("h-[60vh]");
+      // videoWindow.classList.toggle("w-[70%]");
+      // videoWindow.classList.toggle("h-[85vh]");
+      // videoWindow.classList.toggle("w-[90%]");
+      captionWindow.classList.toggle("bottom-[-100%]");
+      captionWindow.classList.toggle("bottom-20");
 
     }
 
@@ -214,22 +256,29 @@ const DeafCall = () => {
          <>
             <div className='min-h-screen w-screen bg-[#202124] pt-6 px-16 relative overflow-hidden'>
         
-        <div id='video-window' className={` h-[85vh] w-[90%] mx-auto bg-white relative duration-700`} >
-                {/* below will be the video of the hearing user */}
-                <div
+        {/* this is the video of the other person */}
+        <div
+            id="video-window"
+            className={` h-[85vh] w-[90%] mx-auto bg-white relative duration-700`}
+          >
+            {/* below will be the video of the deaf user */}
+            
+            {/* <img src={Images.signingPerson} alt="..." className='h-[100%] w-[100%] object-cover' /> */}
+            <div id="other-user"
               ref={remotePlayerContainerRef}
               className="h-[100%] w-[100%] object-cover"
             ></div>
-            
-            <div className='absolute h-44 w-64 bg-red-700 top-3 left-3 rounded-lg shadow-xl'>
-
-            {/* below will be the video of the deaf user */}
-            <div
+            {/* this is our video */}
+            <div id="our-user" className="absolute  bg-red-700  rounded-lg shadow-xl duration-700   h-[100%] w-[100%] top-0">
+              {/* below will be the video of the hearing user */}
+              {/* <img src={Images.hearingPerson} alt="..." className='h-[100%] w-[100%] rounded-lg' /> */}
+              <div
                 ref={localPlayerContainerRef}
                 className="h-[100%] w-[100%] rounded-lg"
               ></div>
             </div>
-        </div>
+          </div>
+
 
       
 
@@ -254,13 +303,16 @@ const DeafCall = () => {
             <p className='text-lg font-bold'>Meeting Details</p><br />
             <p className='font-bold'>Joining Info</p>
             <hr />
-            <p className='text-gray-500 font-thin'>{meetingLink}</p>
+            <p className='text-gray-500 font-thin overflow-scroll select-all'>{meetingLink}</p>
         </div>
 
-        <div id='caption-window' className='h-48 w-[80%] absolute bottom-[-100%] left-40 px-3 py-3 text-white duration-700 '>
+        <div
+            id="caption-window"
+            className="h-48 w-[82.9%] absolute bottom-[-100%] left-[8.3rem] px-3 py-3 text-white duration-700 bg-black bg-opacity-25"
+            >
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellat ex quod totam alias, excepturi necessitatibus dolores animi nisi distinctio sunt pariatur. Ex mollitia obcaecati et, magni esse atque corrupti incidunt officia animi.
-
-        </div>
+            
+          </div>
 
 </div>
          </>

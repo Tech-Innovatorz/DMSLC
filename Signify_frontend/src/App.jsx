@@ -1,3 +1,4 @@
+import 'regenerator-runtime/runtime';
 import Services from "./pages/services/Services"
 import HearingCall from "./pages/hearingCall/HearingCall"
 import DeafCall from "./pages/deafCall/DeafCall"

@@ -16,7 +16,16 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
+import io from 'socket.io-client';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+// import 'regenerator-runtime'
+
+const socket=io.connect("http://localhost:8800");
+
 const HearingCall = () => {
+
+ 
+
   
   const navigate = useNavigate();
   const [meetingLink, meetingLinkTrigger] = useState("");
@@ -29,6 +38,9 @@ const HearingCall = () => {
   const [otherUserJoined, setOtherUserJoined] = useState(false)
   const [isInitialRender, setIsInitialRender] = useState(true);
 
+  //this is the text from speech to text
+  const [recognizedText, setRecognizedText] = useState('');
+  const [recogActive, setRecogActive] = useState(false)
 
   let agoraEngine = null;
 
@@ -38,7 +50,7 @@ const HearingCall = () => {
     remoteVideoTrack: null,
     remoteAudioTrack: null,
   };
-
+  
   useEffect(() => {
     return () => {
       if (!agoraEngine) {
@@ -47,6 +59,85 @@ const HearingCall = () => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if(!openDialog)
+    {
+
+      let recognition;
+      let resetTimeout;
+  
+      const startRecognition = () => {
+        if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+          recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+          recognition.continuous = true;
+          recognition.interimResults = true;
+  
+          recognition.onstart = () => {
+            setRecogActive(true);
+          };
+  
+          recognition.onresult = (event) => {
+            let interimTranscript = '';
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+              if (event.results[i].isFinal) {
+                interimTranscript += event.results[i][0].transcript;
+              }
+            }
+            // setRecognizedText(interimTranscript);
+            socket.emit("send_message",{message:interimTranscript})
+            // console.log(recognizedText)
+            // Reset transcript after 5 seconds
+          // clearTimeout(resetTimeout);
+          // resetTimeout = setTimeout(() => {
+          //   setRecognizedText('');
+          // }, 5000);
+
+          };
+  
+          // recognition.onend = () => {
+          //   console.log(recognizedText)
+          //   setRecogActive(false);
+          // };
+  
+          recognition.onerror = (event) => {
+            console.error('Speech recognition error:', event.error);
+          };
+  
+          recognition.start();
+          console.log("started!!!!!")
+        } else {
+          console.error('Speech recognition is not supported in your browser.');
+        }
+      };
+  
+      startRecognition();
+      // Clean up the recognition when the component unmounts
+      return () => {
+        if (recognition) {
+          recognition.stop();
+        }
+        clearTimeout(resetTimeout);
+    }
+
+    };
+    
+  
+    
+  },[openDialog])
+
+
+  useEffect(() => {
+    socket.on("recieve_message",(data)=>{
+      // alert(data.message)
+      setRecognizedText(data.message)
+      setTimeout(() => {
+        setRecognizedText("")
+      }, 8000);
+    })
+  }, [socket])
+  
+  
 
   //this useEffect runs depending whether other user is there or not
   useEffect(() => {
@@ -212,12 +303,12 @@ const HearingCall = () => {
     const videoWindow = document.querySelector("#video-window");
 
     console.log(captionWindow, videoWindow);
-    videoWindow.classList.toggle("h-[60vh]");
-    videoWindow.classList.toggle("w-[70%]");
-    videoWindow.classList.toggle("h-[85vh]");
-    videoWindow.classList.toggle("w-[90%]");
+    // videoWindow.classList.toggle("h-[60vh]");
+    // videoWindow.classList.toggle("w-[70%]");
+    // videoWindow.classList.toggle("h-[85vh]");
+    // videoWindow.classList.toggle("w-[90%]");
     captionWindow.classList.toggle("bottom-[-100%]");
-    captionWindow.classList.toggle("bottom-13");
+    captionWindow.classList.toggle("bottom-20");
   };
   return (
     <>
@@ -307,7 +398,7 @@ const HearingCall = () => {
           </div>
           <div
             id="info-window"
-            className="h-[80%] w-72 bg-white absolute top-10 right-[-100%] px-3 py-3 rounded-lg duration-500 shadow-lg"
+            className="h-[80%] w-72 bg-white absolute top-10 right-[-100%] px-3 py-3 rounded-lg duration-500 shadow-lg z-10"
           >
             <p className="text-lg font-bold">Meeting Details</p>
             <br />
@@ -319,12 +410,13 @@ const HearingCall = () => {
           </div>
           <div
             id="caption-window"
-            className="h-48 w-[80%] absolute bottom-[-100%] left-40 px-3 py-3 text-white duration-700 "
+            className="h-48 w-[82.9%] absolute bottom-[-100%] left-[8.3rem] px-3 py-3 text-white duration-700 bg-black bg-opacity-25"
           >
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellat
+            {/* Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellat
             ex quod totam alias, excepturi necessitatibus dolores animi nisi
             distinctio sunt pariatur. Ex mollitia obcaecati et, magni esse atque
-            corrupti incidunt officia animi.
+            corrupti incidunt officia animi. */}
+            {recognizedText}
           </div>
         </div>
       )}
