@@ -17,6 +17,11 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
+import io from 'socket.io-client';
+
+
+const socket=io.connect("http://localhost:8800");
+
 const DeafCall = () => {
 
   const navigate = useNavigate();
@@ -29,6 +34,9 @@ const DeafCall = () => {
    //check whether other user joined or not
    const [otherUserJoined, setOtherUserJoined] = useState(false)
    const [isInitialRender, setIsInitialRender] = useState(true);
+
+   //this is the text from speech to text
+  const [recognizedText, setRecognizedText] = useState('');
 
   let agoraEngine = null;
 
@@ -47,6 +55,21 @@ const DeafCall = () => {
       }
     };
   }, []);
+
+  //this useEffect will recieve the message and display it in captions
+  useEffect(() => {
+    socket.on("recieve_message",(data)=>{
+      // alert(data.message)
+      
+      //after some time update the recognised text
+      setRecognizedText(data.message)
+      setTimeout(() => {
+        setRecognizedText("")
+      }, 8000);
+    })
+  }, [socket])
+  
+  
 
   //this useEffect runs depending whether other user is there or not
   useEffect(() => {
@@ -310,7 +333,8 @@ const DeafCall = () => {
             id="caption-window"
             className="h-48 w-[82.9%] absolute bottom-[-100%] left-[8.3rem] px-3 py-3 text-white duration-700 bg-black bg-opacity-25"
             >
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellat ex quod totam alias, excepturi necessitatibus dolores animi nisi distinctio sunt pariatur. Ex mollitia obcaecati et, magni esse atque corrupti incidunt officia animi.
+            {/* Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellat ex quod totam alias, excepturi necessitatibus dolores animi nisi distinctio sunt pariatur. Ex mollitia obcaecati et, magni esse atque corrupti incidunt officia animi. */}
+            {recognizedText}
             
           </div>
 

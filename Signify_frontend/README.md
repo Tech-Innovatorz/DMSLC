@@ -18,4 +18,3 @@ Currently, two official plugins are available:
 7. React-icons -> `npm install react-icons --save`
 8. Agora-rtc-sdk-ng -> `npm i agora-rtc-sdk-ng`
 9. socket.io-client -> `npm i socket.io-client`
-10. react-speech-recognition -> `npm i react-speech-recognition`

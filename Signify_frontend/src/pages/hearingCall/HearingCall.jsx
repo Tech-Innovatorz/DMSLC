@@ -17,8 +17,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import io from 'socket.io-client';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-// import 'regenerator-runtime'
+
 
 const socket=io.connect("http://localhost:8800");
 
@@ -60,6 +59,8 @@ const HearingCall = () => {
     };
   }, []);
 
+
+  //this UseEffect will do SPEECH RECOGNITION
   useEffect(() => {
     if(!openDialog)
     {
@@ -68,6 +69,7 @@ const HearingCall = () => {
       let resetTimeout;
   
       const startRecognition = () => {
+        //check whether window supports any of the speech recognition libraries
         if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
           recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
           recognition.continuous = true;
@@ -79,31 +81,27 @@ const HearingCall = () => {
   
           recognition.onresult = (event) => {
             let interimTranscript = '';
+
+            //only extract the latest transcript from the recognised speech
             for (let i = event.resultIndex; i < event.results.length; ++i) {
               if (event.results[i].isFinal) {
                 interimTranscript += event.results[i][0].transcript;
               }
             }
-            // setRecognizedText(interimTranscript);
+
+            //emit the text to the server as send_message event
             socket.emit("send_message",{message:interimTranscript})
-            // console.log(recognizedText)
-            // Reset transcript after 5 seconds
-          // clearTimeout(resetTimeout);
-          // resetTimeout = setTimeout(() => {
-          //   setRecognizedText('');
-          // }, 5000);
+            
 
           };
   
-          // recognition.onend = () => {
-          //   console.log(recognizedText)
-          //   setRecogActive(false);
-          // };
+          
   
           recognition.onerror = (event) => {
             console.error('Speech recognition error:', event.error);
           };
-  
+          
+          //here it starts recognising
           recognition.start();
           console.log("started!!!!!")
         } else {
@@ -126,11 +124,14 @@ const HearingCall = () => {
     
   },[openDialog])
 
-
+  //this useEffect will recieve the message and display it in captions
   useEffect(() => {
     socket.on("recieve_message",(data)=>{
       // alert(data.message)
+
       setRecognizedText(data.message)
+
+      //after some time update the recognised text
       setTimeout(() => {
         setRecognizedText("")
       }, 8000);
