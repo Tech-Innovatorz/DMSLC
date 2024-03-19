@@ -1,33 +1,29 @@
-import 'regenerator-runtime/runtime';
-import Services from "./pages/services/Services"
-import HearingCall from "./pages/hearingCall/HearingCall"
-import DeafCall from "./pages/deafCall/DeafCall"
-import Authentication from "./pages/authentication/Authentication"
-import Home from "./pages/home/Home"
-import MeetPage from "./pages/meetPage/MeetPage"
+import "regenerator-runtime/runtime";
+import Services from "./pages/services/Services";
+import HearingCall from "./pages/hearingCall/HearingCall";
+import DeafCall from "./pages/deafCall/DeafCall";
+import Authentication from "./pages/authentication/Authentication";
+import Home from "./pages/home/Home";
+import MeetPage from "./pages/meetPage/MeetPage";
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 export default function App() {
-
   const [currentUser, currentUserTrigger] = useState(null);
 
   useEffect(() => {
-
     const getCurrentUser = async () => {
       try {
-        const response = await axios.get('http://localhost:8800/getCurrentUser', {});
-        console.log(response.data.message , " is logged in!! ");
+        const response = await axios.get(
+          "http://localhost:8800/getCurrentUser",
+          {}
+        );
+        console.log(response.data.message, " is logged in!! ");
         currentUserTrigger(response.data.message);
-
       } catch (error) {
-        console.error('Error fetching data:', error.message);
+        console.error("Error fetching data:", error.message);
         currentUserTrigger(null);
       }
     };
@@ -42,32 +38,29 @@ export default function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: currentUser ? <MeetPage/> : <Authentication/>,
+      element: currentUser ? <Home /> : <Authentication />,
     },
     {
       path: "/authenticate",
-      element: !currentUser ? <Authentication/> : <Home/>,
+      element: !currentUser ? <Authentication /> : <Home />,
     },
     {
       path: "/services",
-      element: !currentUser ? <Authentication/> : <Services/>,
+      element: !currentUser ? <Authentication /> : <Services />,
     },
     {
       path: "/hC",
-      element: <HearingCall/>,
+      element: <HearingCall />,
     },
     {
       path: "/dC",
-      element: <DeafCall/>,
+      element: <DeafCall />,
     },
     {
       path: "/meet",
-      element: <MeetPage/>,
-    }
-    
+      element: <MeetPage />,
+    },
   ]);
 
-  return (
-      <RouterProvider router={router}/>
-  )
+  return <RouterProvider router={router} />;
 }
