@@ -42,7 +42,7 @@ export default function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: currentUser ? <MeetPage/> : <Authentication/>,
+      element: currentUser ? <Home/> : <Authentication/>,
     },
     {
       path: "/authenticate",
