@@ -5,10 +5,14 @@ import advertisingGirl from '../assets/advertisingGirl.png'
 import bg from '../assets/bg.jpg'
 import signingPerson from '../assets/deaf-in-sign-language.jpg'
 import hearingPerson from '../assets/KarthikUniformImage.jpeg'
-import gMeetPageImage from '../assets/user_edu_get_a_link_light.svg'
+import gMeetPageImage from '../assets/gMeetPageImage.png'
+
 import HeroSectionImg from '../assets/Signing-Image.png'
 import DescSectionImg from '../assets/desc-Section-Image.png'
 import DeviceSectionImg from '../assets/device-Section-Image.png'
+import SignLanguageOfflineTranslatePic from '../assets/SignLanguageOfflineVideoTranslatePic.jpg'
+import SignLanguageRealTimePic from '../assets/SignLanguageRealTimeTranslatePic.jpg'
+import SignLanguageVideoCallPic from '../assets/SignLanguageVideoCallPic.jpg'
 
 
 export default {
@@ -22,5 +26,9 @@ export default {
     gMeetPageImage,
     HeroSectionImg,
     DescSectionImg,
-    DeviceSectionImg
+    DeviceSectionImg,
+    SignLanguageOfflineTranslatePic,
+    SignLanguageRealTimePic,
+    SignLanguageVideoCallPic
+
 };

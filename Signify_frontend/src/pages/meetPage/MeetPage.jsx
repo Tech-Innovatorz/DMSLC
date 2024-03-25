@@ -88,14 +88,14 @@ const MeetPage = () => {
             <p className='text-4xl'> now free for everyone</p><br />
             <p className='text-2xl font-thin'>We reengineer the way of commumnication for everyone, now inclusive of deaf people. In our meet, we make it inclusive to all</p>
             <div className='flex space-x-2 items-center my-12'>
-                <button className='w-52 h-12 bg-blue-600 text-lg font-semibold text-white rounded-lg' onClick={instantMeetHandler}><TiVideo className='inline-block mr-2 h-7 w-7 fill-white'/>create instant meet</button>
+                <button className='w-52 h-12 bg-blue-600 text-lg font-semibold text-white rounded-lg hover:bg-blue-700 duration-150' onClick={instantMeetHandler}><TiVideo className='inline-block mr-2 h-7 w-7 fill-white'/>create instant meet</button>
                 <div >
-                <input type="text" name='meetingLink' className='h-12 mr-2 rounded-lg' placeholder='enter a code' onChange={onInputChange} />
+                <input type="text" name='meetingLink' className='h-12 mr-2 rounded-lg px-2' placeholder='enter a code' onChange={onInputChange} />
                 <button className='disabled:text-gray-500 font-semibold text-lg' onClick={onJoinHandler}>Join</button>
                 </div>
             </div>
         </div>
-        <img src={Images.gMeetPageImage} className='inline-block' alt="..." />
+        <img src={Images.gMeetPageImage} className='inline-block' height={550} width={550} alt="..." />
     </div>
   )
 }

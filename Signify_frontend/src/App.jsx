@@ -13,6 +13,12 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
+//temporary pages in home
+import SignLanVidCall from './pages/products/signLangVidCall/SignLanVidCall';
+import SignLanRealTime from './pages/products/signLangRealTime/SignLanRealTime';
+import SignLanOfflineVid from './pages/products/signLangOfflineVid/SignLanOfflineVid';
+import OfflineVidPage from './pages/offlineVideoPage/OfflineVidPage';
+
 
 export default function App() {
 
@@ -63,6 +69,14 @@ export default function App() {
     {
       path: "/meet",
       element: <MeetPage/>,
+    },
+    {
+      path: "/prodoffline",
+      element: <SignLanOfflineVid/>,
+    },
+    {
+      path: "/vidoffline",
+      element: <OfflineVidPage/>,
     }
     
   ]);
