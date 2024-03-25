@@ -8,7 +8,6 @@ function Home() {
     <>
       <Navbar />
       <CTA />
-
       <Footer />
     </>
   );
