@@ -75,6 +75,10 @@ export default function App() {
       element: <SignLanOfflineVid/>,
     },
     {
+      path: "/prodrealtime",
+      element: <SignLanRealTime/>,
+    },
+    {
       path: "/vidoffline",
       element: <OfflineVidPage/>,
     }
