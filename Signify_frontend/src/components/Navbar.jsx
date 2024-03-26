@@ -1,43 +1,90 @@
-import React from 'react'
-import voice from '../assets/voice.svg'
+import React from "react";
+import { useState } from "react";
+import voice from "../assets/voice.svg";
 import { IoMenu } from "react-icons/io5";
+import logo from "../assets/logo.png";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
+  const [state, setState] = useState(false);
 
-  const navLinks = document.querySelector('.nav-links')
-
-  function onToggleMenu(e){
-    const men=document.getElementById("menu")
-    // console.log(e.name)
-    console.log(men.name)
-
-
-      // e.name = e.name === 'menu' ? 'close' : 'menu'
-      navLinks.classList.toggle('top-[6%]')
-      navLinks.classList.toggle('top-[-100%]')
-
-  }
+  const navigation = [
+    { title: "Home", path: "javascript:void(0)" },
+    { title: "About Us", path: "javascript:void(0)" },
+    { title: "Product", path: "javascript:void(0)" },
+    { title: "Contribute", path: "javascript:void(0)" },
+  ];
 
   return (
-    <nav className='bg-blue-500 flex justify-between md:justify-normal items-center px-5'>
-    <div className='flex items-center w-[60%]'>
-        <div className='flex items-center z-10'>
-            <img className='w-16' src={voice} alt="..." />
-            <h1 className='font-bold w-56 text-sm'>Dual Mode Sign Language Communication Platform</h1>
+    <nav className="bg-white w-full border-b md:border-0 md:static ">
+      <div className="items-center px-4 max-w-screen-xl mx-auto md:flex md:px-8">
+        <div className="flex items-center justify-between py-3 md:block">
+          <a href="javascript:void(0)">
+            <img src={logo} width={120} height={50} alt="Signify logo" />
+          </a>
+          <div className="md:hidden">
+            <button
+              className="text-gray-700 outline-none p-2 rounded-md focus:border-gray-400 focus:border"
+              onClick={() => setState(!state)}
+            >
+              {state ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 8h16M4 16h16"
+                  />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
-        <div className='nav-links duration-500 absolute md:static bg-blue-500 min-h-[10vh] md:min-h-fit left-0 top-[-100%] w-full md:w-fit flex items-center px-5 justify-center md:justify-normal'>
-        <ul className='flex text-center md:flex-row flex-col gap-8 md:gap-0 '>
-            <li className='list-none inline-block px-5 mx-5'>Home</li>
-            <li className='list-none inline-block px-5 mx-5'>ContactUs</li>
-            <li className='list-none inline-block px-5 mx-5'>Project</li>
-        </ul>
-
+        <div
+          className={`flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${
+            state ? "block" : "hidden"
+          }`}
+        >
+          <ul className="justify-center items-center space-y-8 md:flex md:space-x-12 md:space-y-0">
+            {navigation.map((item, idx) => {
+              return (
+                <li key={idx} className="text-gray-600 hover:text-indigo-600">
+                  <NavLink to={item.path}>{item.title}</NavLink>
+                </li>
+              );
+            })}
+          </ul>
         </div>
-    </div>
-        {/* <ion-icon ></ion-icon> */}
-        <IoMenu onClick={(e)=>{onToggleMenu(e)}} name="menu" id='menu' className="text-3xl z-10 cursor-pointer md:hidden"/>
+        <button className="hidden md:inline-block  ">
+          <NavLink
+            to={"/authenticate"}
+            className="py-2  px-6 text-white bg-indigo-600 hover:bg-indigo-700 rounded-3xl   shadow"
+          >
+            Sign Up
+          </NavLink>
+        </button>
+      </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

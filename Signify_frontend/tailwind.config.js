@@ -8,7 +8,8 @@ export default {
     extend: {
       screens: {
         "wide": "1440px"
-      }
+      },
+      colors: ""
     },
   },
   plugins: [],
