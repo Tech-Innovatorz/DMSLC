@@ -1,5 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { IoMdDownload } from "react-icons/io";
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
 
 const OfflineVidPage = () => {
 
@@ -27,6 +29,8 @@ const OfflineVidPage = () => {
     
 
   return (
+    <>
+    <Navbar />
     <div className='padding-b xl:padding-l xl:padding-r py-6'>
         <div className='px-5'>
             <h1 className='text-4xl font-bold mb-3 lg:mb-5 md:text-5xl xl:text-6xl'>Offline Video Translate</h1>
@@ -51,7 +55,7 @@ const OfflineVidPage = () => {
                         <label
                         htmlFor="fileInput"
                         className="block text-sm text-slate-500 mr-4 py-2 px-4 rounded-md border-0  font-semibold bg-pink-50 hover:bg-pink-100 cursor-pointer
-                                lg:text-lg
+                        lg:text-lg
                              
                              "
                         >
@@ -73,6 +77,8 @@ const OfflineVidPage = () => {
             </div>
         </div>}
     </div>
+    <Footer />
+    </>
   )
 }
 

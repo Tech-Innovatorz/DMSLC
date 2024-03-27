@@ -14,6 +14,19 @@ import SignLanguageOfflineTranslatePic from '../assets/SignLanguageOfflineVideoT
 import SignLanguageRealTimePic from '../assets/SignLanguageRealTimeTranslatePic.jpg'
 import SignLanguageVideoCallPic from '../assets/SignLanguageVideoCallPic.jpg'
 
+import DefaultSignConv from "../assets/sign-language-default.png"
+
+//temporary signlanguage images
+import Explore_1 from "../assets/Explore-1.png"
+import The_1 from "../assets/The-1.png"
+import The_2 from "../assets/The-2.png"
+import The_3 from "../assets/The-3.png"
+import Nature_1 from "../assets/Nature-1.png"
+
+const explore=[Explore_1]
+const the=[The_1,The_2,The_3]
+const nature=[Nature_1]
+//
 
 export default {
     react,
@@ -29,6 +42,10 @@ export default {
     DeviceSectionImg,
     SignLanguageOfflineTranslatePic,
     SignLanguageRealTimePic,
-    SignLanguageVideoCallPic
+    SignLanguageVideoCallPic,
+    explore,
+    the,
+    nature,
+    DefaultSignConv
 
 };

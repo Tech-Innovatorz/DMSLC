@@ -3,6 +3,13 @@ import { FaHandPaper } from "react-icons/fa";
 import { BiSolidCaptions } from "react-icons/bi";
 import { TiVideo } from "react-icons/ti";
 import { IoCall } from "react-icons/io5";
+
+// import The_1 from "../../../../Signify_Server/ASL images/The/The-1.png"
+// import Images from '../../constants';
+
+
+import { FaSignLanguage } from "react-icons/fa";
+
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { Images } from '../../constants'
 import { useState, useEffect, useRef } from 'react';
@@ -23,6 +30,12 @@ import io from 'socket.io-client';
 const socket=io.connect("http://localhost:8800");
 
 const DeafCall = () => {
+
+  //temporary message
+  const [mess, setMess] = useState("explore the nature")
+
+  const [signConversionWindow, setSignConversionWindow] = useState(false)
+  const [signConversionImage, setSignConversionImage] = useState(Images.DefaultSignConv)
 
   const navigate = useNavigate();
   const [meetingLink, meetingLinkTrigger] = useState("");
@@ -46,6 +59,42 @@ const DeafCall = () => {
     remoteVideoTrack: null,
     remoteAudioTrack: null,
   };
+
+  //function to convert the words to sign language images
+  const convertWordToImage= async()=>{
+    
+
+
+    const arrayOfWords=mess.match(/\b(\w+)\b/g);
+
+    
+    async function displayListElementsWithDelay(list, index) {
+      // Base case: If index is equal to or greater than the length of the list, stop recursion
+      if (index >= list.length) {
+        return;
+      }
+    
+      const response = await fetch(`http://localhost:8800/getSignWord/${arrayOfWords[index].toLowerCase()}`);
+      const data = await response.json();
+      // setImageUrl(data.imageUrl);
+      console.log(data.url)
+      setSignConversionImage(data.url)
+    
+    
+      // Increment index to move to the next element
+      index++;
+    
+      // Call setTimeout to recursively call the function after 2 seconds
+      setTimeout(function() {
+        displayListElementsWithDelay(list, index);
+      }, 1000); // 2000 milliseconds = 2 seconds
+    }
+
+    displayListElementsWithDelay(arrayOfWords, 0);
+
+  }
+
+
 
   useEffect(() => {
     return () => {
@@ -247,6 +296,11 @@ const DeafCall = () => {
 
     }
 
+    const ToggleSignConversion=()=>{
+      // console.log("i got activated")
+      setSignConversionWindow(!signConversionWindow)
+    }
+
   return (
     <>
       {
@@ -311,9 +365,10 @@ const DeafCall = () => {
 
             </div>
             <div className='flex space-x-5'>
-                <button className='h-12 w-12 rounded-full duration-500 bg-gray-400 hover:bg-gray-300'><TiVideo className='m-auto h-6 w-6' /></button>
+                <button className='h-12 w-12 rounded-full duration-500 bg-gray-400 hover:bg-gray-300' onClick={convertWordToImage}><TiVideo className='m-auto h-6 w-6' /></button>
                 <button className='h-12 w-12 rounded-full duration-500 bg-gray-400 hover:bg-gray-300' onClick={ToggleCaptions}><BiSolidCaptions className='m-auto h-6 w-6' /></button>
                 <button className='h-12 w-12 rounded-full duration-500 bg-gray-400 hover:bg-gray-300'><FaHandPaper className='m-auto h-6 w-6' /></button>
+                <button className='h-12 w-12 rounded-full duration-500 bg-gray-400 hover:bg-gray-300' onClick={ToggleSignConversion}><FaSignLanguage className='m-auto h-6 w-6' /></button>
                 <button className='h-12 w-20 rounded-full duration-500 bg-red-600 hover:bg-red-300' onClick={onEndCall}><IoCall className='m-auto h-6 w-6' /></button>
             </div>
             <div>
@@ -329,12 +384,21 @@ const DeafCall = () => {
             <p className='text-gray-500 font-thin overflow-scroll select-all'>{meetingLink}</p>
         </div>
 
+        
+
         <div
             id="caption-window"
             className="h-48 w-[82.9%] absolute bottom-[-100%] left-[8.3rem] px-3 py-3 text-white duration-700 bg-black bg-opacity-25"
             >
             {/* Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellat ex quod totam alias, excepturi necessitatibus dolores animi nisi distinctio sunt pariatur. Ex mollitia obcaecati et, magni esse atque corrupti incidunt officia animi. */}
-            {recognizedText}
+            {/* {recognizedText} */}
+            {mess}
+
+            <div id='signConversion-window'
+            className={`h-52 w-52 bg-green-500 absolute bottom-[110%] rounded-lg transition-all duration-300  ${signConversionWindow?"opacity-100":"opacity-0"}`}
+            >
+              <img src={signConversionImage} alt="no image" className='object-cover w-full h-full rounded-lg'/>
+            </div>
             
           </div>
 

@@ -2,6 +2,8 @@ import React from 'react'
 import { Images } from '../../../constants'
 import { FaArrowRightLong } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../../../components/Navbar';
+import Footer from '../../../components/Footer';
 
 
 
@@ -15,6 +17,9 @@ const SignLanOfflineVid = () => {
     
 
     return (
+        <>
+        <Navbar />
+
         <div className='padding-b xl:padding-l xl:padding-r'>
             <div className='flex flex-col lg:flex-row px-2 gap-10 max-md:gap-0 max-xl:padding-x xl:items-center'>
                 <div className='flex flex-col mb-4 max-md:mb-0 '>
@@ -31,6 +36,8 @@ const SignLanOfflineVid = () => {
                 <button className='p-3 rounded-full bg-purple-600 text-white flex items-center gap-4 mx-auto hover:bg-purple-400 duration-150 text-2xl font-bold' onClick={handleButtonClick}>Get Started <FaArrowRightLong className='h-10 w-10'/></button>
             </div>
         </div>
+        <Footer />
+        </>
     )
 }
 
