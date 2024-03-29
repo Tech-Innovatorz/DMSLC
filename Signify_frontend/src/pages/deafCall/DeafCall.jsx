@@ -25,6 +25,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import io from 'socket.io-client';
+import SignConversionWindow from '../../components/SignConversionWindow';
 
 
 const socket=io.connect("http://localhost:8800");
@@ -36,6 +37,10 @@ const DeafCall = () => {
 
   const [signConversionWindow, setSignConversionWindow] = useState(false)
   const [signConversionImage, setSignConversionImage] = useState(Images.DefaultSignConv)
+
+  // Assuming you have a state variable to hold the currently highlighted word index
+  const [highlightedWordIndex, setHighlightedWordIndex] = useState(-1);
+
 
   const navigate = useNavigate();
   const [meetingLink, meetingLinkTrigger] = useState("");
@@ -67,6 +72,7 @@ const DeafCall = () => {
 
     const arrayOfWords=mess.match(/\b(\w+)\b/g);
 
+
     
     async function displayListElementsWithDelay(list, index) {
       // Base case: If index is equal to or greater than the length of the list, stop recursion
@@ -76,10 +82,11 @@ const DeafCall = () => {
     
       const response = await fetch(`http://localhost:8800/getSignWord/${arrayOfWords[index].toLowerCase()}`);
       const data = await response.json();
-      // setImageUrl(data.imageUrl);
-      console.log(data.url)
+      // console.log(data.url)
       setSignConversionImage(data.url)
-    
+
+      // Highlight the current word being displayed
+      setHighlightedWordIndex(index);
     
       // Increment index to move to the next element
       index++;
@@ -87,7 +94,7 @@ const DeafCall = () => {
       // Call setTimeout to recursively call the function after 2 seconds
       setTimeout(function() {
         displayListElementsWithDelay(list, index);
-      }, 1000); // 2000 milliseconds = 2 seconds
+      }, 2000); // 2000 milliseconds = 2 seconds
     }
 
     displayListElementsWithDelay(arrayOfWords, 0);
@@ -365,9 +372,9 @@ const DeafCall = () => {
 
             </div>
             <div className='flex space-x-5'>
-                <button className='h-12 w-12 rounded-full duration-500 bg-gray-400 hover:bg-gray-300' onClick={convertWordToImage}><TiVideo className='m-auto h-6 w-6' /></button>
+                <button className='h-12 w-12 rounded-full duration-500 bg-gray-400 hover:bg-gray-300'><TiVideo className='m-auto h-6 w-6' /></button>
                 <button className='h-12 w-12 rounded-full duration-500 bg-gray-400 hover:bg-gray-300' onClick={ToggleCaptions}><BiSolidCaptions className='m-auto h-6 w-6' /></button>
-                <button className='h-12 w-12 rounded-full duration-500 bg-gray-400 hover:bg-gray-300'><FaHandPaper className='m-auto h-6 w-6' /></button>
+                <button className='h-12 w-12 rounded-full duration-500 bg-gray-400 hover:bg-gray-300' onClick={convertWordToImage}><FaHandPaper className='m-auto h-6 w-6' /></button>
                 <button className='h-12 w-12 rounded-full duration-500 bg-gray-400 hover:bg-gray-300' onClick={ToggleSignConversion}><FaSignLanguage className='m-auto h-6 w-6' /></button>
                 <button className='h-12 w-20 rounded-full duration-500 bg-red-600 hover:bg-red-300' onClick={onEndCall}><IoCall className='m-auto h-6 w-6' /></button>
             </div>
@@ -391,14 +398,17 @@ const DeafCall = () => {
             className="h-48 w-[82.9%] absolute bottom-[-100%] left-[8.3rem] px-3 py-3 text-white duration-700 bg-black bg-opacity-25"
             >
             {/* Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellat ex quod totam alias, excepturi necessitatibus dolores animi nisi distinctio sunt pariatur. Ex mollitia obcaecati et, magni esse atque corrupti incidunt officia animi. */}
+            
+            {/* this text below is the recognised text that is recieved from other user */}
             {/* {recognizedText} */}
-            {mess}
+            {mess.split(' ').map((word, index) => (
+              <span key={index} className={highlightedWordIndex === index ? "border border-t-[0px] border-l-[0px] border-r-[0px] border-b-8 border-yellow-300  duration-75" : ""}>
+                {word}{' '}
+              </span>
+            ))}
 
-            <div id='signConversion-window'
-            className={`h-52 w-52 bg-green-500 absolute bottom-[110%] rounded-lg transition-all duration-300  ${signConversionWindow?"opacity-100":"opacity-0"}`}
-            >
-              <img src={signConversionImage} alt="no image" className='object-cover w-full h-full rounded-lg'/>
-            </div>
+
+            <SignConversionWindow signConversionWindow={signConversionWindow} imageUrl={signConversionImage}/>
             
           </div>
 

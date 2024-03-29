@@ -109,7 +109,7 @@ const MeetPage = () => {
           </div>
         </div>
       </div>
-      <img src={Images.gMeetPageImage} className="inline-block" alt="..." />
+      <img src={Images.gMeetPageImage} className="inline-block" height={500} width={500} alt="..." />
     </div>
   );
 };
